@@ -6,9 +6,9 @@ Notable examples of applications that are embeddable with `rqt_embed_window`:
 
 ![Screenshot of SimpleScreenRecorder, Rviz, Plotjuggler, rosbag_editor and a normal rqt_console](screenshot1.png)
 
-* [Plotjuggler](https://www.plotjuggler.io) Saving some efforts to awesome [@facontidavide](https://github.com/facontidavide) to be able to use it alongside [Rviz](https://github.com/facontidavide/PlotJuggler/issues/87)/[Rqt](https://github.com/facontidavide/PlotJuggler/issues/5)
-* [Rviz](http://wiki.ros.org/rviz) Works without crashes unlike [rqt_rviz](http://wiki.ros.org/rqt_rviz) [Issue #6](https://github.com/ros-visualization/rqt_rviz/issues/6).
-* [rosbag_editor](https://github.com/facontidavide/rosbag_editor)
+* [Plotjuggler](https://www.plotjuggler.io) Helping the awesome [@facontidavide](https://github.com/facontidavide) to be able to use it alongside [Rviz](https://github.com/facontidavide/PlotJuggler/issues/87)/[Rqt](https://github.com/facontidavide/PlotJuggler/issues/5) as some people requested.
+* [Rviz](http://wiki.ros.org/rviz) Works without crashes unlike [rqt_rviz](http://wiki.ros.org/rqt_rviz) [Issue #6](https://github.com/ros-visualization/rqt_rviz/issues/6). (The main motivation for this work).
+* [rosbag_editor](https://github.com/facontidavide/rosbag_editor) Another seriously awesome tool by [@facontidavide](https://github.com/facontidavide).
 
 Other maybe useful or fun ones:
 * Google Chrome (if you have an already existing web interface)
@@ -67,4 +67,8 @@ plotjuggler --nosplash --layout my_layout
 ```bash
 rosrun rosbag_editor rosbag_editor
 ```
+
+# Thanks
+
+Thanks to [@leggedrobotics](https://github.com/leggedrobotics), specially [@samuelba](https://github.com/samuelba), for the [catkin_create_rqt](https://github.com/leggedrobotics/catkin_create_rqt) package which made cooking the first version of this package quick and painless.
 
