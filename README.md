@@ -33,18 +33,38 @@ You'll be prompted for the commandline for the program (which will be executed i
 
 You can export your perspective and load it later as any other.
 
-# Things that didn't work for me
+## Things that didn't work for me
 terminator, gnome-terminal, LibreOffice, kivy-based apps
 
 
-# How to try if an app works quickly
+## How to try if an app works quickly
 Use the `test_if_window_can_be_embedded.py` script providing it the PID of the window you want to test.
 
 You can find the PID by means of `ps aux | grep program-name` or `pstree -p` and look for the process that inherits the rest.
 
 You can also use `xwininfo` and click on the window and manually modify the script to use the window id provided.
 
-# Workarounds for complex commands/programs
+## Workarounds for complex commands/programs
 If your program needs a long set of parameters or environment variables, set it up in a bash
 script and call it from rqt_embed_window, however, you must make sure to prepend the binary with `exec` so the PID reported to rqt_embed_window is the actual PID of the program itself and not the
 shell that is executing it.
+
+## Useful examples
+
+Find here suggestions of commands that may be useful (these are to be added in the popup of the plugin).
+
+### Run rviz with a config file
+```bash
+rviz --splash-screen None --display-config my_rviz_config.rviz
+```
+
+### Run plotjuggler
+```bash
+plotjuggler --nosplash --layout my_layout
+```
+
+### Run rosbag_editor
+```bash
+rosrun rosbag_editor rosbag_editor
+```
+
