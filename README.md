@@ -6,7 +6,7 @@ Notable examples of applications that are embeddable with `rqt_embed_window`:
 
 ![Screenshot of SimpleScreenRecorder, Rviz, Plotjuggler, rosbag_editor and a normal rqt_console](screenshot1.png)
 
-* [Plotjuggler](https://www.plotjuggler.io) Saving some efforts to awesome @facontidavide to be able to use it alongside [Rviz](https://github.com/facontidavide/PlotJuggler/issues/87)/[Rqt](https://github.com/facontidavide/PlotJuggler/issues/5)
+* [Plotjuggler](https://www.plotjuggler.io) Saving some efforts to awesome [@facontidavide](https://github.com/facontidavide) to be able to use it alongside [Rviz](https://github.com/facontidavide/PlotJuggler/issues/87)/[Rqt](https://github.com/facontidavide/PlotJuggler/issues/5)
 * [Rviz](http://wiki.ros.org/rviz) Works without crashes unlike [rqt_rviz](http://wiki.ros.org/rqt_rviz) [Issue #6](https://github.com/ros-visualization/rqt_rviz/issues/6).
 * [rosbag_editor](https://github.com/facontidavide/rosbag_editor)
 
