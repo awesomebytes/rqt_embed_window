@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package format="2">
+  <name>rqt_embed_window</name>
+  <version>0.9.0</version>
+  <description>rqt_embed_window provides a GUI plugin to embed other windows</description>
+
+  <maintainer email="sammypfeiffer@gmail.com">Sammy Pfeiffer</maintainer>
+  <license>BSD</license>
+  <author email="sammypfeiffer@gmail.com">Sammy Pfeiffer</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>rospy</build_depend>
+  <build_depend>rqt_gui_py</build_depend>
+  <depend>wmctrl</depend>
+
+
+  <export>
+    <rqt_gui plugin="${prefix}/plugin.xml"/>
+  </export>
+</package>

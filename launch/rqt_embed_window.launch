@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <node pkg="rqt_embed_window" type="rqt_embed_window" name="rqt_embed_window_node"
+        output="screen">
+  </node>
+</launch>

@@ -1,0 +1,18 @@
+<library path="src">
+  <class name="RqtEmbedWindow" type="rqt_embed_window.RqtEmbedWindow.RqtEmbedWindow"
+         base_class_type="rqt_gui_py::Plugin">
+    <description>
+      A GUI plugin to execute GUI applications as rqt_ plugins
+    </description>
+    <qtgui>
+      <group>
+        <label>Miscellaneous Tools</label>
+        <icon type="theme">folder</icon>
+        <statustip>Plugins related to miscellaneous tasks</statustip>
+      </group>
+      <label>Embed a graphical program window into RQT</label>
+      <icon type="theme">view-restore</icon>
+      <statustip>A GUI plugin to embed (hopefully) any graphical application into an rqt plugin</statustip>
+    </qtgui>
+  </class>
+</library>
