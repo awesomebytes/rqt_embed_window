@@ -1,14 +1,19 @@
 import os
 import rospy
 import time
+from copy import deepcopy
 
 from qt_gui.plugin import Plugin
 from python_qt_binding import loadUi
 from python_qt_binding.QtWidgets import QWidget, QInputDialog
 from python_qt_binding.QtGui import QWindow
-from python_qt_binding.QtCore import Qt
+from python_qt_binding.QtCore import Qt, QTimer
 from qt_gui.settings import Settings
 from shell_cmd import ShellCmd
+
+# hack
+from PyQt5.Qt import QApplication
+
 
 def get_window_id_by_pid(pid):
     """
@@ -50,6 +55,7 @@ class RqtEmbedWindow(Plugin):
     """
     This plugin allows to embed a Qt window into a rqt plugin.
     """
+
     def __init__(self, context):
         super(RqtEmbedWindow, self).__init__(context)
         self.setObjectName('RqtEmbedWindow')
@@ -91,7 +97,9 @@ class RqtEmbedWindow(Plugin):
         # Create a the window that will contain the program
         window = QWindow.fromWinId(window_id)
         # FramelessWindowHint is necessary for the window to effectively get embedded
-        window.setFlags(Qt.FramelessWindowHint)
+        window.setFlags(Qt.FramelessWindowHint) # | Qt.ForeignWindow | Qt.WA_NoMousePropagation)
+        self._external_window = window
+        window.setMouseGrabEnabled(True)
         widget = QWidget.createWindowContainer(window)
 
         # Store it for later
@@ -110,10 +118,50 @@ class RqtEmbedWindow(Plugin):
             self._widget.setWindowTitle('{} ({}) ({})'.format(self._widget.windowTitle(),
                                                               self.context.serial_number(), self._command))
 
+        # self._widget.installEventFilter(self)
+        self._external_window_widget.setAcceptDrops(True)
+        # self._widget.verticalLayout.setDragEnabled(True)
+        # self._external_window_widget.installEventFilter(self)
+        self._external_window.installEventFilter(self)
+        # QApplication.installEventFilter(self.parent)
+        # self.timer = QTimer()
+        # self.timer.timeout.connect(self.ipython)
+        # self.timer.start(1000)
+
+    def eventFilter(self, source, event):
+        print("Event source: {} event: {} of type: {} and is accepted: {}".format(source, event, event.type(),
+                                                                                  event.isAccepted()))
+        # MouseButtonPress = 2,                   // mouse button pressed
+        # MouseButtonRelease = 3,                 // mouse button released
+        # MouseButtonDblClick = 4,                // mouse button double click
+        # MouseMove = 5,                          // mouse move
+        # KeyPress = 6,                           // key pressed
+        # KeyRelease = 7,                         // key released
+        # FocusIn = 8,                            // keyboard focus received
+        # FocusOut = 9,                           // keyboard focus lost
+        # Enter = 10,                             // mouse enters widget
+        # Leave = 11,                             // mouse leaves widget
+        # Paint = 12,                             // paint widget
+        # Move = 13,                              // move widget                                                                 
+        # DragEnter = 60,                         // drag moves into widget
+        # DragMove = 61,                          // drag moves in widget
+        # DragLeave = 62,                         // drag leaves or is cancelled
+        # Drop = 63,                              // actual drop
+        # ToolTip = 110,
+        if event.type() in [60, 61, 62, 63]:
+            # QApplication.sendEvent(self._external_window_widget, event)
+            #import ipdb;        ipdb.set_trace()
+            # copy_event = deepcopy(event)
+            # QApplication.postEvent(self, copy_event)
+            pass
+        return super(Plugin, self).eventFilter(source, event)
+
+    def ipython(self):
+        import ipdb;        ipdb.set_trace()
+
     def shutdown_plugin(self):
         # Free resources
         self._process.kill()
-
 
     def save_settings(self, plugin_settings, instance_settings):
         instance_settings.set_value("command", self._command)

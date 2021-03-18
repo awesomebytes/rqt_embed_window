@@ -12,9 +12,9 @@ class ShellCmd:
 
     def __init__(self, cmd):
         self.retcode = None
-        self.outf = tempfile.NamedTemporaryFile(mode="w")
-        self.errf = tempfile.NamedTemporaryFile(mode="w")
-        self.inf = tempfile.NamedTemporaryFile(mode="r")
+        self.outf = tempfile.NamedTemporaryFile(mode="w", prefix='shell_cmd_rqt_embed_window_stdout')
+        self.errf = tempfile.NamedTemporaryFile(mode="w", prefix='shell_cmd_rqt_embed_window_stderr')
+        self.inf = tempfile.NamedTemporaryFile(mode="r", prefix='shell_cmd_rqt_embed_window_stdin')
         self.process = subprocess.Popen(cmd, shell=True, stdin=self.inf,
                                         stdout=self.outf, stderr=self.errf,
                                         preexec_fn=os.setsid, close_fds=True)

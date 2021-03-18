@@ -31,10 +31,12 @@ def run_app(window_id):
     main_widget.setWindowTitle('embed_another_window')
     layout = QVBoxLayout(main_widget)
 
+
     window = QWindow.fromWinId(window_id)
     # FramelessWindowHint is NECESSARY
-    window.setFlags(Qt.FramelessWindowHint)
+    window.setFlags(Qt.FramelessWindowHint | Qt.ForeignWindow | Qt.WA_NoMousePropagation)
     widget = QWidget.createWindowContainer(window)
+    widget.setAcceptDrops(True)
     layout.addWidget(widget)
 
     button = QPushButton('Close')
