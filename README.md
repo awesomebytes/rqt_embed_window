@@ -2,7 +2,9 @@
 
 Embed any graphical program window into a rqt_ plugin. The ultimate productivy tool!
 
-Notable examples of applications that are embeddable with `rqt_embed_window`:
+Warning: This is a hacky approach. The plugin executes your program and captures the window to embed it in rqt_gui.
+
+Notable examples of applications that are embeddable(*) with `rqt_embed_window`:
 
 ![Screenshot of SimpleScreenRecorder, Rviz, Plotjuggler, rosbag_editor and a normal rqt_console](screenshot1.png)
 
@@ -20,6 +22,8 @@ Other maybe useful or fun ones:
 * Some games like Slay the Spire
 * Another instance of rqt_gui
 
+
+(*) **Caveat**: Some drag-and-drop behaviours sometimes don't work. As far as I investigated, the problem is that the embedded app does not receive those events (investigated on a Qt app). Some apps have workarounds (see below).
 
 # Usage
 
@@ -57,11 +61,15 @@ Find here suggestions of commands that may be useful (these are to be added in t
 ```bash
 rviz --splash-screen None --display-config my_rviz_config.rviz
 ```
+Workaround needed to re-order displays (done by dragging the item) in the Displays panel, 
+you must create your `.rviz` config file in a non-embedded Rviz. Other dragging actions seem to work.
 
 ### Run plotjuggler
 ```bash
-plotjuggler --nosplash --layout my_layout
+plotjuggler --nosplash --layout my_layout.xml
 ```
+Workaround needed to drag data sources from the left panel, drag-and-drop doesn't work, so you must
+create the layout (with the `Save data sources` option enabled) for the embedded plotjuggler before hand in a non-embedded plotjuggler.
 
 ### Run rosbag_editor
 ```bash
