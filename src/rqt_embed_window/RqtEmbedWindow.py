@@ -87,7 +87,7 @@ class RqtEmbedWindow(Plugin):
         self._window_name = ''
         self._external_window_widget = None
         self._process = None
-        self._timeout_to_window_discovery = 5.0
+        self._timeout_to_window_discovery = 20.0
 
         # Create QWidget
         self._widget = QWidget()
