@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>RqtEmbedWindowWidget</class>
- <widget class="QWidget" name="RqtEmbedWindowWidget">
+ <class>EmbedWindowWidget</class>
+ <widget class="QWidget" name="EmbedWindowWidget">
   <property name="enabled">
    <bool>true</bool>
   </property>
