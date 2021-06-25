@@ -48,6 +48,7 @@ def run_app(window_id):
 
     main_widget.show()
     app.exec_()
+    return
     
 
 
