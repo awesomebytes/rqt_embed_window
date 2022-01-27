@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import subprocess
 import tempfile
@@ -52,7 +52,6 @@ class ShellCmd:
         while not self.is_done():
             time.sleep(0.1)
 
-
     def get_pid(self):
         return self.process.pid
 
@@ -68,14 +67,14 @@ if __name__ == '__main__':
     cmd = ShellCmd("sleep 3")
     try:
         while not cmd.is_done():
-            print "Still sleeping..."
+            print("Still sleeping...")
             time.sleep(0.5)
     except KeyboardInterrupt:
-        print "Pressed Control+C, stopping command."
+        print("Pressed Control+C, stopping command.")
         cmd.kill()
     if cmd.is_succeeded():
-        print "The command finished succesfully"
-        print "It printed: " + str(cmd.get_stdout())
+        print("The command finished succesfully")
+        print("It printed: " + str(cmd.get_stdout()))
     else:
-        print "The command didn't finish succesfully"
-        print "Its stderr was: " + str(cmd.get_stdout())
+        print("The command didn't finish succesfully")
+        print("Its stderr was: " + str(cmd.get_stdout()))

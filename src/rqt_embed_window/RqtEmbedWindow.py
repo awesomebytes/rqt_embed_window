@@ -8,7 +8,7 @@ from python_qt_binding.QtWidgets import QWidget, QInputDialog
 from python_qt_binding.QtGui import QWindow
 from python_qt_binding.QtCore import Qt
 from qt_gui.settings import Settings
-from shell_cmd import ShellCmd
+from rqt_embed_window.shell_cmd import ShellCmd
 
 
 def get_window_id_by_window_name(window_name):
