@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 def get_window_id_by_pid(pid):
     """
@@ -20,6 +20,7 @@ def get_window_id_by_pid(pid):
             if this_pid == pid:
                 return int(fields[0], 16)
     return None
+
 
 def run_app(window_id):
     from PyQt5.QtGui import QWindow
@@ -48,7 +49,6 @@ def run_app(window_id):
 
     main_widget.show()
     app.exec_()
-    
 
 
 if __name__ == '__main__':
