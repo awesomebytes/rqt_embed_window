@@ -29,7 +29,7 @@ def get_window_id_by_window_name(window_name):
             # Avoiding dealing with unicode...
             if str(this_window_name) == str(window_name):
                 return int(fields[0], 16)
-    return
+    return None
 
 
 def get_window_id_by_pid(pid):
@@ -51,7 +51,7 @@ def get_window_id_by_pid(pid):
             this_pid = int(fields[2])
             if this_pid == pid:
                 return int(fields[0], 16)
-    return
+    return None
 
 
 def wait_for_window_id(pid=None, window_name=None, timeout=5.0):
@@ -92,7 +92,6 @@ class EmbedWindowWidget(QWidget):
         # Extend the widget with all attributes and children from UI file
         loadUi(ui_file, self)
         self.setObjectName('EmbedWindowUi')
-        return
 
     def add_external_window_widget(self, command, window_name = "", timeout_to_window_discovery = 20.0):
         # The command is prepended with exec so it becomes the shell executing it
@@ -115,7 +114,7 @@ class EmbedWindowWidget(QWidget):
                                                                                                           self._process.get_stdout(),
                                                                                                           self._process.get_stderr()))
             self._process.kill()
-            return
+            return None
 
         # Create a the window that will contain the program
         window = QWindow.fromWinId(window_id)
@@ -132,18 +131,17 @@ class EmbedWindowWidget(QWidget):
 
         self.verticalLayout.addWidget(self._external_window_widget)
 
-        return
-    
+        return None
+
     def is_window_empty(self):
         return (self._external_window_widget is None)
 
     def remove_widget(self):
         self.verticalLayout.removeWidget(self._external_window_widget)
-        return
 
     def is_process_running(self):
         return (self._process is not None and not self._process.is_done())
     
     def kill_process(self):
-        self._process.kill()
-        return
+        if self._process:
+            self._process.kill()

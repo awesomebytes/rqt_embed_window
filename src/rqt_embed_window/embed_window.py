@@ -24,7 +24,6 @@ class EmbedWindow(Plugin):
         context.add_widget(self._widget)
 
         self.context = context
-        return
 
     def add_external_window_widget(self):
         self._widget.add_external_window_widget(self._command, self._window_name, self._timeout_to_window_discovery)
@@ -35,17 +34,14 @@ class EmbedWindow(Plugin):
         else:
             self._widget.setWindowTitle('{} ({}) ({})'.format(self._widget.windowTitle(),
                                                               self.context.serial_number(), self._command))
-        return
 
     def shutdown_plugin(self):
         # Free resources
         self._widget.kill_process()
-        return
 
     def save_settings(self, plugin_settings, instance_settings):
         instance_settings.set_value("command", self._command)
         instance_settings.set_value("window_name", self._window_name)
-        return
 
     def restore_settings(self, plugin_settings, instance_settings):
         self._command = instance_settings.value("command")
@@ -54,7 +50,6 @@ class EmbedWindow(Plugin):
             self.add_external_window_widget()
         else:
             self.trigger_configuration()
-        return
 
     def trigger_configuration(self):
         # Enable the gear icon and allow to configure the plugin for the program to execute
@@ -80,4 +75,3 @@ class EmbedWindow(Plugin):
                 self._widget.kill_process()
 
             self.add_external_window_widget()
-        return

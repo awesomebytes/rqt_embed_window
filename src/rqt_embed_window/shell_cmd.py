@@ -18,7 +18,6 @@ class ShellCmd:
         self.process = subprocess.Popen(cmd, shell=True, stdin=self.inf,
                                         stdout=self.outf, stderr=self.errf,
                                         preexec_fn=os.setsid, close_fds=True)
-        return;
 
     def __del__(self):
         if not self.is_done():
@@ -26,7 +25,6 @@ class ShellCmd:
         self.outf.close()
         self.errf.close()
         self.inf.close()
-        return;
 
     def get_stdout(self):
         with open(self.outf.name, "r") as f:
@@ -53,8 +51,6 @@ class ShellCmd:
     def wait_until_done(self):
         while not self.is_done():
             time.sleep(0.1)
-        return;
-
 
     def get_pid(self):
         return self.process.pid
@@ -63,7 +59,6 @@ class ShellCmd:
         self.retcode = -1
         os.killpg(self.process.pid, signal.SIGTERM)
         self.process.wait()
-        return;
 
 
 # Demonstration of usage
