@@ -2,12 +2,10 @@ import os
 import rospy
 import time
 
-from qt_gui.plugin import Plugin
 from python_qt_binding import loadUi
-from python_qt_binding.QtWidgets import QWidget, QInputDialog
+from python_qt_binding.QtWidgets import QWidget
 from python_qt_binding.QtGui import QWindow
 from python_qt_binding.QtCore import Qt
-from qt_gui.settings import Settings
 from shell_cmd import ShellCmd
 
 
@@ -75,56 +73,48 @@ def wait_for_window_id(pid=None, window_name=None, timeout=5.0):
     return window_id
 
 
-class RqtEmbedWindow(Plugin):
+class EmbedWindowWidget(QWidget):
     """
-    This plugin allows to embed a Qt window into a rqt plugin.
+    Separated QWidget from plugin
     """
 
-    def __init__(self, context):
-        super(RqtEmbedWindow, self).__init__(context)
-        self.setObjectName('RqtEmbedWindow')
-        self._command = ''
-        self._window_name = ''
+    def __init__(self, plugin = None):
+        super(EmbedWindowWidget, self).__init__()
         self._external_window_widget = None
         self._process = None
-        self._timeout_to_window_discovery = 20.0
+        self._plugin = plugin
 
         # Create QWidget
-        self._widget = QWidget()
         # Get path to UI file which is a sibling of this file
         # in this example the .ui and .py file are in the same folder
         ui_file = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                               'RqtEmbedWindow.ui')
+                               'EmbedWindow.ui')
         # Extend the widget with all attributes and children from UI file
-        loadUi(ui_file, self._widget)
-        self._widget.setObjectName('RqtEmbedWindowUi')
-        # Add widget to the user interface
-        context.add_widget(self._widget)
+        loadUi(ui_file, self)
+        self.setObjectName('EmbedWindowUi')
 
-        self.context = context
-
-    def add_external_window_widget(self):
+    def add_external_window_widget(self, command, window_name = "", timeout_to_window_discovery = 20.0):
         # The command is prepended with exec so it becomes the shell executing it
         # So it effectively has the PID we will look for the window ID
-        self._process = ShellCmd("exec " + self._command)
+        self._process = ShellCmd("exec " + command)
 
         # If a window name is provided, it probably means that's the only way to find the window
         # so, let's do that first
-        if self._window_name:
-            window_id = wait_for_window_id(window_name=self._window_name,
-                                           timeout=self._timeout_to_window_discovery)
+        if window_name:
+            window_id = wait_for_window_id(window_name=window_name,
+                                           timeout=timeout_to_window_discovery)
         else:
             # Get window ID from PID, we must wait for it to appear
             window_id = wait_for_window_id(pid=self._process.get_pid(),
-                                           timeout=self._timeout_to_window_discovery)
+                                           timeout=timeout_to_window_discovery)
         if window_id is None:
             rospy.logerr("Could not find window id...")
-            rospy.logerr("Command was: {} \nWindow name was: '{}'\nStdOut was: {}\nStdErr was: {}".format(self._command,
-                                                                                                          self._window_name,
+            rospy.logerr("Command was: {} \nWindow name was: '{}'\nStdOut was: {}\nStdErr was: {}".format(command,
+                                                                                                          window_name,
                                                                                                           self._process.get_stdout(),
                                                                                                           self._process.get_stderr()))
             self._process.kill()
-            return
+            return None
 
         # Create a the window that will contain the program
         window = QWindow.fromWinId(window_id)
@@ -136,55 +126,22 @@ class RqtEmbedWindow(Plugin):
         self._external_window_widget = widget
 
         # Set all margins and spacing to 0 to maximize window usage
-        self._widget.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self._widget.verticalLayout.setSpacing(0)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setSpacing(0)
 
-        self._widget.verticalLayout.addWidget(self._external_window_widget)
+        self.verticalLayout.addWidget(self._external_window_widget)
 
-        # Give the title (for rqt_gui compisitions) some information
-        if self.context.serial_number() < 2:
-            self._widget.setWindowTitle('{}      ({})'.format(self._widget.windowTitle(), self._command))
-        else:
-            self._widget.setWindowTitle('{} ({}) ({})'.format(self._widget.windowTitle(),
-                                                              self.context.serial_number(), self._command))
+        return None
 
-    def shutdown_plugin(self):
-        # Free resources
-        self._process.kill()
+    def is_window_empty(self):
+        return (self._external_window_widget is None)
 
-    def save_settings(self, plugin_settings, instance_settings):
-        instance_settings.set_value("command", self._command)
-        instance_settings.set_value("window_name", self._window_name)
+    def remove_widget(self):
+        self.verticalLayout.removeWidget(self._external_window_widget)
 
-    def restore_settings(self, plugin_settings, instance_settings):
-        self._command = instance_settings.value("command")
-        self._window_name = instance_settings.value("window_name")
-        if self._command is not None and self._command != '':
-            self.add_external_window_widget()
-        else:
-            self.trigger_configuration()
-
-    def trigger_configuration(self):
-        # Enable the gear icon and allow to configure the plugin for the program to execute
-        text, ok = QInputDialog.getText(self._widget, 'RqtEmbedWindow Settings',
-                                        "Qt GUI command to execute (disable splashscreens):",
-                                        text=self._command)
-        if ok:
-            self._command = text
-
-            # Ask if the user wants to use the Window Name instead of the PID to find the window
-            # Some apps spawn different processes and it's hard to find the window otherwise
-            text, ok = QInputDialog.getText(self._widget, 'RqtEmbedWindow Settings',
-                                            "If you prefer to find the window by the window name, input it here:",
-                                            text=self._window_name)
-            if ok:
-                self._window_name = text
-
-            # Refresh plugin!
-            if self._external_window_widget is not None:
-                self._widget.verticalLayout.removeWidget(self._external_window_widget)
-
-            if self._process is not None and not self._process.is_done():
-                self._process.kill()
-
-            self.add_external_window_widget()
+    def is_process_running(self):
+        return (self._process is not None and not self._process.is_done())
+    
+    def kill_process(self):
+        if self._process:
+            self._process.kill()

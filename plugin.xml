@@ -1,5 +1,5 @@
 <library path="src">
-  <class name="RqtEmbedWindow" type="rqt_embed_window.RqtEmbedWindow.RqtEmbedWindow"
+  <class name="EmbedWindow" type="rqt_embed_window.embed_window.EmbedWindow"
          base_class_type="rqt_gui_py::Plugin">
     <description>
       A GUI plugin to execute GUI applications as rqt_ plugins

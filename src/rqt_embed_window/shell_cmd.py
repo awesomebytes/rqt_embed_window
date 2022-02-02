@@ -52,7 +52,6 @@ class ShellCmd:
         while not self.is_done():
             time.sleep(0.1)
 
-
     def get_pid(self):
         return self.process.pid
 

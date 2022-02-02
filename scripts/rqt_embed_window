@@ -2,8 +2,8 @@
 
 import sys
 
-from rqt_embed_window.RqtEmbedWindow import RqtEmbedWindow
+from rqt_embed_window.embed_window import EmbedWindow
 from rqt_gui.main import Main
 
 main = Main(filename='rqt_embed_window')
-sys.exit(main.main(standalone='rqt_embed_window'))
+sys.exit(main.main(standalone='rqt_embed_window.embed_window.EmbedWindow'))
